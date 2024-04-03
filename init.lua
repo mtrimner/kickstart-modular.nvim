@@ -87,23 +87,42 @@ P.S. You can delete this when you're done too. It's your config now! :)
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+-- 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+if vim.g.vscode then
+  vim.keymap.set('n', '<C-j>', function()
+    require('vscode-neovim').call('workbench.action.navigateDown')
+  end, { noremap = true, silent = true })
+  
+  vim.keymap.set('n', '<C-k>', function()
+    require('vscode-neovim').call('workbench.action.navigateUp')
+  end, { noremap = true, silent = true })
+  
+  vim.keymap.set('n', '<C-h>', function()
+    require('vscode-neovim').call('workbench.action.navigateLeft')
+  end, { noremap = true, silent = true })
+  
+  vim.keymap.set('n', '<C-l>', function()
+    require('vscode-neovim').call('workbench.action.navigateRight')
+  end, { noremap = true, silent = true })
+  
+else
+  -- Set to true if you have a Nerd Font installed
+  vim.g.have_nerd_font = false
 
--- Set to true if you have a Nerd Font installed
-vim.g.have_nerd_font = false
+  -- [[ Setting options ]]
+  require 'options'
 
--- [[ Setting options ]]
-require 'options'
+  -- [[ Basic Keymaps ]]
+  require 'keymaps'
 
--- [[ Basic Keymaps ]]
-require 'keymaps'
+  -- [[ Install `lazy.nvim` plugin manager ]]
+  require 'lazy-bootstrap'
 
--- [[ Install `lazy.nvim` plugin manager ]]
-require 'lazy-bootstrap'
+  -- [[ Configure and install plugins ]]
+  require 'lazy-plugins'
 
--- [[ Configure and install plugins ]]
-require 'lazy-plugins'
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
+  -- The line beneath this is called `modeline`. See `:help modeline`
+  -- vim: ts=2 sts=2 sw=2 et
+end
